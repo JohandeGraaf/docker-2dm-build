@@ -17,7 +17,7 @@ RUN apt-get -qq update && \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Install Google Cloud SDK
-    RUN export CLOUDSDK_CORE_DISABLE_PROMPTS=1 && \
+RUN export CLOUDSDK_CORE_DISABLE_PROMPTS=1 && \
     SDK_VERSION=212.0.0 && \
     SDK_FILENAME=google-cloud-sdk-${SDK_VERSION}-linux-x86_64.tar.gz && \
     curl -O -J https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/${SDK_FILENAME} && \
