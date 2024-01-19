@@ -1,4 +1,4 @@
-FROM node:18.17.1
+FROM node:20.11.0
 
 #apt-get update
 RUN apt-get -qq update && \
@@ -7,6 +7,7 @@ RUN apt-get -qq update && \
 
 # Install git tools
 RUN apt-get -y install git
+
 
 # Install mysql
 RUN apt-get -y install mysql\*
@@ -20,14 +21,19 @@ RUN wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
 	curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 
+# Install jsonlint-php
+RUN apt-get -y install jsonlint
+
+
 # Install Google Cloud SDK
 RUN export CLOUDSDK_CORE_DISABLE_PROMPTS=1 && \
-    SDK_VERSION=442.0.0 && \
+    SDK_VERSION=460.0.0 && \
     SDK_FILENAME=google-cloud-sdk-${SDK_VERSION}-linux-x86_64.tar.gz && \
     curl -O -J https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/${SDK_FILENAME} && \
     tar -zxvf ${SDK_FILENAME} --directory ${HOME} && \
     export PATH=${PATH}:/root/google-cloud-sdk/bin
-	
+
+
 # Install Cloud SQL Auth Proxy
 RUN curl -o cloud-sql-proxy https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.6.0/cloud-sql-proxy.linux.amd64 && \
     chmod +x cloud-sql-proxy
@@ -35,3 +41,4 @@ RUN curl -o cloud-sql-proxy https://storage.googleapis.com/cloud-sql-connectors/
 
 ENV CLOUDSDK_CORE_DISABLE_PROMPTS=1
 ENV PATH="${PATH}:/root/google-cloud-sdk/bin"
+ENV NODE_OPTIONS="--max_old_space_size=4096"
